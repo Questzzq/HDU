@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	int n, i;
+	int tj[1001], king[1001];
+
+	while( scanf("%d",&n) && n!=0 )
+	{
+		int num = 0;
+		
+		for(i=0; i<n; i++)
+			scanf("%d", &tj[i]);
+		for(int i = 0; i < n; i++)
+			cout << tj[i] << " ";
+		cout << endl;
+		for(i=0; i<n; i++)
+			scanf("%d", &king[i]);
+		sort(tj, tj+n);
+		sort(king, king+n);
+
+		int tl=0, th=n-1;	//tl最慢，th最快
+		int kl=0, kh=n-1;	//hl最慢，th最快
+
+		while( tl<=th )
+		{
+			if( king[kh]>tj[th] )
+			{
+				kh--;
+				tl++;
+				num--;
+			}
+			else if( king[kh]<tj[th] )
+			{
+				kh--;
+				tl--;
+				num++;
+			}
+			else if( king[kh]==tj[kh] )
+			{
+				if( tj[tl]<king[kl] )
+				{
+					tl++;
+					kh--;
+					num--;
+				}
+				else if( tj[tl]>king[kl] )
+				{
+					tl++;
+					kl++;
+					num++;
+				}
+				else if( tj[tl]==king[kl] )
+				{
+					if( tj[tl]<king[kh] )
+					{
+						tl++;
+						kh--;
+						num--;
+					}
+					else
+					{
+						tl++;
+						kl--;
+					}
+				}
+			}
+		}
+		printf("%d\n", num*200);
+	}
+
+	return 0;
+}
